@@ -1,30 +1,24 @@
 // src/db.js
 require('dotenv').config();
-import { connect } from 'mysql2';
-
-const config = {
-  server: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || '1433', 10),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  options: {
-    encrypt: true, // required for Azure SQL; fine on-prem too
-    trustServerCertificate: process.env.TRUST_CERT === 'true' // allow self-signed in dev
-  },
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000
-  }
-};
+const mysql = require('mysql2/promise');
 
 let pool;
-async function getPool() {
+
+function getPool() {
   if (pool) return pool;
-  pool = await connect(config);
-  console.log('Database connected');
+  pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    // timezone: 'Z', // opcional: fuerza UTC
+    // dateStrings: true, // opcional: devuelve DATETIME como string
+  });
   return pool;
 }
 
-export default { sql, getPool };
+module.exports = { getPool };
