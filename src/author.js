@@ -1,27 +1,33 @@
-
-    
-
-
-    // src/authorRepo.js
+// src/authorRepo.js
 const { getPool } = require('./db');
 
-/** Obtiene todos los autores */
+/** Todos los autores */
 async function getAll() {
   const pool = getPool();
   const [rows] = await pool.query(
-    `SELECT * FROM pubs.authors;`
+    'SELECT * FROM `authors` ORDER BY `au_lname`, `au_fname`'
   );
   return rows;
 }
 
-/** Obtiene autores filtrando por estado (ej. 'CA') */
+/** Autores por estado (ej. 'CA') */
 async function getAllWithState(state) {
   const pool = getPool();
   const [rows] = await pool.query(
-    'SELECT * FROM pubs.authors WHERE `state` = ? ORDER BY `au_lname`, `au_fname`' ,
+    'SELECT * FROM `authors` WHERE `state` = ? ORDER BY `au_lname`, `au_fname`',
     [state]
   );
   return rows;
 }
 
-module.exports = { getAll, getAllWithState };
+/** Un autor por ID (PK) */
+async function getById(id) {
+  const pool = getPool();
+  const [rows] = await pool.query(
+    'SELECT * FROM `authors` WHERE `au_id` = ? LIMIT 1',
+    [id]
+  );
+  return rows[0] || null;
+}
+
+module.exports = { getAll, getAllWithState, getById };
