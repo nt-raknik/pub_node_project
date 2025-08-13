@@ -1,0 +1,24 @@
+{
+  "name": "pub_node_project",
+  "version": "1.0.0",
+  "description": "Proyecto para probar un server de node con la base de datos pubs db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nt-raknik/pub_node_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nt-raknik/pub_node_project/issues"
+  },
+  "homepage": "https://github.com/nt-raknik/pub_node_project#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "mysql2": "^3.14.3"
+  }
+}
